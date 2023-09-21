@@ -14,7 +14,7 @@ public class RandomPrim {
 
     private void generateMaze(Maze maze) {
         maze.setElement(2, 2, PATH);
-        maze.getAdjacentIndexList(1, 1).forEach((cellIndex) -> {
+        maze.getAdjacentIndexList(2, 2).forEach((cellIndex) -> {
             maze.setElement(cellIndex, WALL);
         });
         Integer randomWallIndex = pickRandomWallIndex(maze);
