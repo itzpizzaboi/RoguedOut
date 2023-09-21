@@ -1,7 +1,7 @@
 package tinesone.maze;
 
 public enum CellType {
-    EMPTY,
+    UNVISITED,
     WALL,
     VISITED_WALL,
     PATH

@@ -13,16 +13,18 @@ public class RandomPrim {
     }
 
     private void generateMaze(Maze maze) {
-        maze.setElement(0, 0, PATH);
-        maze.getAdjacentIndexList(0, 0).forEach((cellIndex) -> {
+        maze.setElement(2, 2, PATH);
+        maze.getAdjacentIndexList(1, 1).forEach((cellIndex) -> {
             maze.setElement(cellIndex, WALL);
         });
         Integer randomWallIndex = pickRandomWallIndex(maze);
         while (randomWallIndex != null) { // MAIN LOOP
             generatePaths(maze, randomWallIndex);
             randomWallIndex = pickRandomWallIndex(maze);
-            //System.out.println(randomWallIndex);
         }
+        maze.getEmpty().forEach((cellIndex) -> { // Clean up any unvisited spaces
+            maze.setElement(cellIndex, PATH);
+        });
     }
 
     private Integer pickRandomWallIndex(Maze maze) {
@@ -34,21 +36,30 @@ public class RandomPrim {
         return randomWallIndex;
     }
 
+    private Integer pickRandomEmptyIndex(Maze maze) {
+        if (maze.getEmpty().size() == 0) {
+            return null;
+        }
+        ArrayList<Integer> emptyList = maze.getEmpty();
+        int emptyIndex = emptyList.get((int) Math.floor(Math.random() * emptyList.size()));
+        return emptyIndex;
+    }
+
     private void generatePaths(Maze maze, int randomWallIndex){
         ArrayList<Integer> adjacentToWallIndexList = maze.getAdjacentIndexList(randomWallIndex);
-        int pathCount = 0;
-        for (int index : adjacentToWallIndexList) { // Count the amount of paths next to a random wall!
-            if (maze.getElement(index) != PATH) {
+        int visitedCellsCount = 0;
+        for (int index : adjacentToWallIndexList) { // Count the amount of visited spaces
+            CellType cellType = maze.getElement(index);
+            if (cellType == WALL || cellType == UNVISITED) {
                 continue;
             }
-            pathCount += 1;
+            visitedCellsCount += 1;
         }
-        if (pathCount == 1){
+        if (visitedCellsCount == 1){
             maze.setElement(randomWallIndex, PATH);
             adjacentToWallIndexList.forEach((cellIndex) -> {
-                if (maze.getElement(cellIndex) == EMPTY) {
+                if (maze.getElement(cellIndex) == UNVISITED) {
                     maze.setElement(cellIndex, WALL);
-                    //System.out.println("EMPTY TEST!");
                 }
             });
         }

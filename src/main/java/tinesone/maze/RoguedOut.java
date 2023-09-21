@@ -7,6 +7,6 @@ public class RoguedOut extends JavaPlugin {
     @Override
     public void onEnable() {
         RandomPrim mazeGenerator = new RandomPrim();
-        mazeGenerator.generateMaze(10, 10).printElements();
+        mazeGenerator.generateMaze(14, 14).printElements();
     }
 }

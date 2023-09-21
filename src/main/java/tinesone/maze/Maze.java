@@ -4,8 +4,7 @@ package tinesone.maze;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import static tinesone.maze.CellType.PATH;
-import static tinesone.maze.CellType.WALL;
+import static tinesone.maze.CellType.*;
 
 public class Maze {
     private final int width;
@@ -15,10 +14,23 @@ public class Maze {
     private final CellType maze[];
 
     public Maze(int width, int height) {
-        this.width = width;
-        this.height = height;
-        maze = new CellType[width * height];
-        Arrays.fill(maze, CellType.EMPTY);
+        this.width = width + 2;
+        this.height = height + 2;
+        maze = new CellType[this.width * this.height];
+        Arrays.fill(maze, UNVISITED);
+        fillOuterWalls();
+    }
+
+    private void fillOuterWalls()
+    {
+        for (int x = 0; x <width; x++){
+            setElement(x, 0, VISITED_WALL);
+            setElement(x, height-1, VISITED_WALL);
+        }
+        for (int y = 0; y <height; y++){
+            setElement(0, y, VISITED_WALL);
+            setElement(width-1, y, VISITED_WALL);
+        }
     }
 
     private int toIndex(int x, int y) {
@@ -38,31 +50,48 @@ public class Maze {
     }
 
     public void printElements(){
-//        System.out.println(String.format("X: %d", width));
-//        System.out.println(String.format("Y: %d", height));
         for(int x = 0; x <width; x++){
             String line = "";
             for(int y = 0; y <height; y++){
-                line += getElement(x, y).toString() + " ";
+                switch(getElement(x, y)){
+                    case PATH:
+                        line += "o ";
+                        break;
+                    case VISITED_WALL:
+                        line += "x ";
+                        break;
+                    case WALL:
+                        line += String.format("x: %d, y: %d. UNRESOLVED WALL ", x, y);
+                        break;
+                    case UNVISITED:
+                        line += String.format("x: %d, y: %d. UNVISITED SPACE ", x, y);
+                }
             }
             System.out.println(line);
-            //System.out.println("\n");
         }
     }
 
     public ArrayList<Integer> getAdjacentIndexList(int x, int y) {
         ArrayList<Integer> indexList = new ArrayList<>();
         if (x+1 < getWidth()){
-            indexList.add(toIndex(x+1, y));
+            if (getElement(x+1, y) != VISITED_WALL) {
+                indexList.add(toIndex(x + 1, y));
+            }
         }
         if (x-1 >= 0){
-            indexList.add(toIndex(x-1, y));
+            if (getElement(x-1, y) != VISITED_WALL) {
+                indexList.add(toIndex(x - 1, y));
+            }
         }
         if (y+1 < getHeight()){
-            indexList.add(toIndex(x, y+1));
+            if (getElement(x, y+1) != VISITED_WALL) {
+                indexList.add(toIndex(x, y + 1));
+            }
         }
         if (y-1 >= 0){
-            indexList.add(toIndex(x, y-1));
+            if (getElement(x, y-1) != VISITED_WALL) {
+                indexList.add(toIndex(x, y - 1));
+            }
         }
         return indexList;
     }
@@ -83,6 +112,17 @@ public class Maze {
             wallsIndex.add(index);
         }
         return wallsIndex;
+    }
+
+    public ArrayList<Integer> getEmpty(){
+        ArrayList<Integer> emptyIndex = new ArrayList<>();
+        for (int index = 0; index < maze.length; index++){
+            if (getElement(index) != UNVISITED){
+                continue;
+            }
+            emptyIndex.add(index);
+        }
+        return emptyIndex;
     }
 
     public int getHeight() {
