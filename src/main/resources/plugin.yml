@@ -1,0 +1,7 @@
+name: Rogued Out
+version: 1.0.0
+main: tinesone.maze.Main
+description: A plugin inspired by TangoTeks Decked out!
+authors: [tinesone, iTzpizzaboi]
+prefix: [RoguedOut]
+api-version: "1.20"
