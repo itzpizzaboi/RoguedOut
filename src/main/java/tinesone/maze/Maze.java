@@ -102,34 +102,15 @@ public class Maze {
         return getAdjacentIndexList(x, y);
     }
 
-
-    public ArrayList<Integer> getWalls(){
-        ArrayList<Integer> wallsIndex = new ArrayList<>();
-        for (int index = 0; index < maze.length; index++){
-            if (getElement(index) != WALL){
-                continue;
-            }
-            wallsIndex.add(index);
-        }
-        return wallsIndex;
-    }
-
-    public ArrayList<Integer> getEmpty(){
-        ArrayList<Integer> emptyIndex = new ArrayList<>();
-        for (int index = 0; index < maze.length; index++){
-            if (getElement(index) != UNVISITED){
-                continue;
-            }
-            emptyIndex.add(index);
-        }
-        return emptyIndex;
-    }
-
     public int getHeight() {
         return height;
     }
 
     public int getWidth() {
         return width;
+    }
+
+    public int getSize(){
+        return width*height;
     }
 }

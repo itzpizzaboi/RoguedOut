@@ -22,27 +22,30 @@ public class RandomPrim {
             generatePaths(maze, randomWallIndex);
             randomWallIndex = pickRandomWallIndex(maze);
         }
-        maze.getEmpty().forEach((cellIndex) -> { // Clean up any unvisited spaces
+        findCellTypeIndexList(maze, UNVISITED).forEach((cellIndex) -> { // Clean up any unvisited spaces
             maze.setElement(cellIndex, PATH);
         });
     }
 
     private Integer pickRandomWallIndex(Maze maze) {
-        if (maze.getWalls().size() == 0) {
+        if (findCellTypeIndexList(maze, WALL).size() == 0) {
             return null;
         }
-        ArrayList<Integer> wallList = maze.getWalls();
+        ArrayList<Integer> wallList = findCellTypeIndexList(maze, WALL);
         int randomWallIndex = wallList.get((int) Math.floor(Math.random() * wallList.size()));
         return randomWallIndex;
     }
 
-    private Integer pickRandomEmptyIndex(Maze maze) {
-        if (maze.getEmpty().size() == 0) {
-            return null;
+    private ArrayList<Integer> findCellTypeIndexList(Maze maze, CellType cellType)
+    {
+        ArrayList<Integer> indexList = new ArrayList<>();
+        for (int index = 0; index < maze.getSize(); index++){
+            if (maze.getElement(index) != cellType){
+                continue;
+            }
+            indexList.add(index);
         }
-        ArrayList<Integer> emptyList = maze.getEmpty();
-        int emptyIndex = emptyList.get((int) Math.floor(Math.random() * emptyList.size()));
-        return emptyIndex;
+        return indexList;
     }
 
     private void generatePaths(Maze maze, int randomWallIndex){
