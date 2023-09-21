@@ -19,7 +19,9 @@ public class RandomPrim {
         });
         Integer randomWallIndex = pickRandomWallIndex(maze);
         while (randomWallIndex != null) { // MAIN LOOP
-            generatePaths(maze);
+            generatePaths(maze, randomWallIndex);
+            randomWallIndex = pickRandomWallIndex(maze);
+            //System.out.println(randomWallIndex);
         }
     }
 
@@ -27,12 +29,12 @@ public class RandomPrim {
         if (maze.getWalls().size() == 0) {
             return null;
         }
-        int randomWallIndex = (int) (Math.random() * maze.getWalls().size());
+        ArrayList<Integer> wallList = maze.getWalls();
+        int randomWallIndex = wallList.get((int) Math.floor(Math.random() * wallList.size()));
         return randomWallIndex;
     }
 
-    private void generatePaths(Maze maze){
-        int randomWallIndex = pickRandomWallIndex(maze);
+    private void generatePaths(Maze maze, int randomWallIndex){
         ArrayList<Integer> adjacentToWallIndexList = maze.getAdjacentIndexList(randomWallIndex);
         int pathCount = 0;
         for (int index : adjacentToWallIndexList) { // Count the amount of paths next to a random wall!
@@ -43,6 +45,12 @@ public class RandomPrim {
         }
         if (pathCount == 1){
             maze.setElement(randomWallIndex, PATH);
+            adjacentToWallIndexList.forEach((cellIndex) -> {
+                if (maze.getElement(cellIndex) == EMPTY) {
+                    maze.setElement(cellIndex, WALL);
+                    //System.out.println("EMPTY TEST!");
+                }
+            });
         }
         else{
             maze.setElement(randomWallIndex, VISITED_WALL);

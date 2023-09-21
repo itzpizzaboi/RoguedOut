@@ -1,0 +1,9 @@
+name: RoguedOut
+version: 1.0.0
+main: tinesone.maze.RoguedOut
+description: A Decked Out inspired Roguelite Minecraft Gamemode
+authors:
+  - tinesone
+  - iTzpizzaboi
+prefix: [Rogued Out]
+api-version: "1.20"

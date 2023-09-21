@@ -1,7 +1,11 @@
 package tinesone.maze;
 
-public class Main {
-    public static void main(String[] args) {
+import org.bukkit.plugin.java.JavaPlugin;
+
+public class RoguedOut extends JavaPlugin {
+
+    @Override
+    public void onEnable() {
         RandomPrim mazeGenerator = new RandomPrim();
         mazeGenerator.generateMaze(10, 10).printElements();
     }
