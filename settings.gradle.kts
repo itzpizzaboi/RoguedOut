@@ -1,2 +1,2 @@
-rootProject.name = "roguelite"
+rootProject.name = "Rogued-Out"
 
