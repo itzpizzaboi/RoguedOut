@@ -1,7 +1,9 @@
-name: Rogued Out
+name: RoguedOut
 version: 1.0.0
-main: tinesone.maze.Main
-description: A plugin inspired by TangoTeks Decked out!
-authors: [tinesone, iTzpizzaboi]
-prefix: [RoguedOut]
+main: tinesone.maze.RoguedOut
+description: A Decked Out inspired Roguelite Minecraft Gamemode
+authors:
+  - tinesone
+  - iTzpizzaboi
+prefix: [Rogued Out]
 api-version: "1.20"
