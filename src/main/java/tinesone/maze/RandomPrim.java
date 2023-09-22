@@ -23,17 +23,16 @@ public class RandomPrim {
             randomWallIndex = pickRandomWallIndex(maze);
         }
         findCellTypeIndexList(maze, UNVISITED).forEach((cellIndex) -> { // Clean up any unvisited spaces
-            maze.setElement(cellIndex, PATH);
+            cleanUpUnvisitedCell(maze, cellIndex);
         });
     }
 
     private Integer pickRandomWallIndex(Maze maze) {
-        if (findCellTypeIndexList(maze, WALL).size() == 0) {
+        if (findCellTypeIndexList(maze, WALL).isEmpty()) {
             return null;
         }
         ArrayList<Integer> wallList = findCellTypeIndexList(maze, WALL);
-        int randomWallIndex = wallList.get((int) Math.floor(Math.random() * wallList.size()));
-        return randomWallIndex;
+        return wallList.get((int) Math.floor(Math.random() * wallList.size()));
     }
 
     private ArrayList<Integer> findCellTypeIndexList(Maze maze, CellType cellType)
@@ -46,6 +45,22 @@ public class RandomPrim {
             indexList.add(index);
         }
         return indexList;
+    }
+
+    private void cleanUpUnvisitedCell(Maze maze, int cellIndex){
+        ArrayList<Integer> adjacentCells = maze.getAdjacentIndexList(cellIndex);
+        int adjacentPathCount = 0;
+        for(int adjacentCellIndex : adjacentCells){
+            CellType cellType = maze.getElement(adjacentCellIndex);
+            if (cellType != PATH) { continue;}
+            adjacentPathCount += 1;
+        }
+        if (adjacentPathCount >= 1){
+            maze.setElement(cellIndex, PATH);
+        }
+        else{
+            maze.setElement(cellIndex, VISITED_WALL);
+        }
     }
 
     private void generatePaths(Maze maze, int randomWallIndex){
