@@ -14,9 +14,7 @@ public class RandomPrim {
 
     private void generateMaze(Maze maze) {
         maze.setElement(2, 2, PATH);
-        maze.getAdjacentIndexList(2, 2).forEach((cellIndex) -> {
-            maze.setElement(cellIndex, WALL);
-        });
+        maze.getAdjacentIndexList(2, 2).forEach((cellIndex) -> maze.setElement(cellIndex, WALL));
         Integer randomWallIndex = pickRandomWallIndex(maze);
         while (randomWallIndex != null) { // MAIN LOOP
             generatePaths(maze, randomWallIndex);
@@ -48,9 +46,8 @@ public class RandomPrim {
     }
 
     private void cleanUpUnvisitedCell(Maze maze, int cellIndex){
-        ArrayList<Integer> adjacentCells = maze.getAdjacentIndexList(cellIndex);
         int adjacentPathCount = 0;
-        for(int adjacentCellIndex : adjacentCells){
+        for(int adjacentCellIndex : maze.getAdjacentIndexList(cellIndex)){
             CellType cellType = maze.getElement(adjacentCellIndex);
             if (cellType != PATH) { continue;}
             adjacentPathCount += 1;
